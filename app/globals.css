@@ -2,9 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Road+Rage&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  
+  --font-roadrage: 'Road Rage', cursive;
+  --font-roboto: 'Roboto', sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,4 +25,109 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.font-display {
+  font-family: var(--font-roadrage);
+  letter-spacing: 0%;
+  line-height: 100%;
+  font-weight: 600;
+  font-style: italic;
+}
+.font-sans {
+  font-family: var(--font-roboto);
+  line-height: 150%;
+}
+
+.brand-text{
+  font-family: var(--font-roadrage);
+  line-height: 15px;
+}
+
+.bg-gradient{
+  background: linear-gradient(
+    155deg,
+    #249fb500 0%,
+    #249fb543 30%,
+   
+    #249fb500 60%,
+    #249fb500
+  );
+}
+
+.bg-dark{
+  background: #052228;
+}
+.bg-transparent{
+  background-color: transparent;
+}
+.bg-umbra{
+  background: rgba(0, 0, 0, 0.211);
+}
+
+.img-cover{
+  background-color: transparent;
+  transition: background 0.2s ease;
+  z-index: 99;
+}
+.img-cover:hover{
+  background-color: rgba(0, 0, 0, 0.345);
+}
+
+
+.partition-a{
+  border-radius: 12px 0 0 12px;
+}
+
+.partition-b{
+  border-radius: 0 12px 12px 0;
+}
+
+.ticketrip{
+  width: 4px;
+  height: 6rem;
+  background: linear-gradient(
+    180deg,
+    rgb(26, 26, 26) 0%,
+    rgb(26, 26, 26) 10%,
+    rgb(156, 155, 155) 10%,
+    rgb(156, 155, 155) 20%,
+    rgb(26, 26, 26) 20%,
+    rgb(26, 26, 26) 30%,
+    rgb(156, 155, 155) 30%,
+    rgb(156, 155, 155) 40%,
+    rgb(26, 26, 26) 0%,
+    rgb(26, 26, 26) 10%,
+    rgb(156, 155, 155) 10%,
+    rgb(156, 155, 155) 20%,
+    rgb(26, 26, 26) 20%,
+    rgb(26, 26, 26) 30%,
+    rgb(156, 155, 155) 30%,
+    rgb(156, 155, 155) 40%
+    
+  );
+  background-repeat: repeat-y;
+}
+
+.barcode{
+  margin-top: 2px;
+}
+
+.tag{
+  transform: rotate(-90deg);
+  display: flex;
+  align-items: center;
+
+  line-height: 0;
+  
+  
+  height: 8px;
+}
+
+.outline{
+  background-color: transparent !important;
+}
+.solid{
+
 }
