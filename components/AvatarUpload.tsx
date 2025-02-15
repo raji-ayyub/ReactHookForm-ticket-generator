@@ -1,18 +1,20 @@
 
-
 'use client';
 
 
 import { useFormContext, Controller } from 'react-hook-form';
+import Image from 'next/image';
 
 const AvatarUpload = ({ onUpload }: { onUpload: (url: string) => void }) => {
-  const { control, watch, formState: { errors } } = useFormContext();
   
+  const { control, watch, formState: { errors } } = useFormContext();
   const mail = "/img/icon.svg"
+
   return (
+
     <div className="flex flex-col items-center space-y-4">
       {/* Image Upload Section */}
-      <div className="w-full h-[344px] rounded-[24px] p-[24px] flex flex-col gap-[32px] bg-[#052228] border border-[#07373F]">
+      <div className="w-full h-[344px] rounded-[24px] p-[24px] flex flex-col gap-[32px] bg-[#052228] border  border-[#07373F]">
         <p>Upload Profile Photo</p>
         <div className="w-[240px] md:w-full h-[240px] bg-[#0E464F] flex mx-auto justify-center  bg-umbra">
           <div className="bg-[#0E464F] max-w-[240px] max-h-[240px] flex items-center relative w-full justify-center overflow-hidden rounded-[32px] group">
@@ -31,9 +33,9 @@ const AvatarUpload = ({ onUpload }: { onUpload: (url: string) => void }) => {
                         reader.onload = () => {
                           field.onChange(reader.result as string);
                           onUpload(reader.result as string);
-                          setIsImageUploaded(true); // Set state to true when image is uploaded
-                          setShowtext(false);
+                         
                         };
+
                         reader.readAsDataURL(file);
                        
                       }
@@ -46,9 +48,7 @@ const AvatarUpload = ({ onUpload }: { onUpload: (url: string) => void }) => {
               
             
               {watch('avatar') ? (
-                <p className="text-white rounded absolute w-[192px] text-[16px] text-center disabled:opacity-0">
-                  
-                </p>
+                <p className="text-white rounded absolute w-[192px] text-[16px] text-center disabled:opacity-0"></p>
                 
               ) : (<p className="text-white absolute rounded w-[192px] text-[16px] text-center  disabled:opacity-50">Drag & drop or click to upload</p>)}
 
@@ -60,10 +60,12 @@ const AvatarUpload = ({ onUpload }: { onUpload: (url: string) => void }) => {
 
             {watch('avatar') && ( 
               <>
-                <img
+                <Image
                   src={watch('avatar')}
                   alt="Preview"
-                  className="w-full relative rounded-full z-[0]"
+                  width={200}
+                  height={200}
+                  className="w-full  z-[0]"
                 />
                 {/* Show text on hover */}
                 <p className="text-white rounded w-[192px] text-[16px] text-center absolute opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -111,9 +113,11 @@ const AvatarUpload = ({ onUpload }: { onUpload: (url: string) => void }) => {
           render={({ field }) => (
             <div className="w-full p-[6px] gap-[8px] h-[48px] flex items-center bg-transparent focus:ring-2 focus:ring-[#197686]-500 rounded-[12px] border border-[#07373F]">
               
-                <img
+                <Image
                   src={mail}
                   alt="Preview"
+                  width={200}
+                  height={200}
                   className="w-[1.5rem] relative z-[0]"
                 />
 
