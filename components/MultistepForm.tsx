@@ -2,21 +2,33 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useForm, FormProvider } from 'react-hook-form'; // Import FormProvider
+import { useForm, FormProvider } from 'react-hook-form';
 import TicketSelection from '@/components/TicketSelection';
 import AvatarUpload from '@/components/AvatarUpload';
 import TicketPreview from '@/components/TicketPreview';
 import TicketCard from '@/components/TicketCard';
-
 const steps = ['Ticket Selection', 'Attendee Details', 'Ready'];
+
+// Define a TypeScript interface for the form data
+interface TicketFormData {
+  fullName: string;
+  email: string;
+  avatar: string;
+  ticketType: string;
+  quantity: number;
+  
+}
+
+
+
 
 const MultiStepForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [currentNum, setCurrentNum] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Initialize react-hook-form
-  const methods = useForm({
+  // Initialize react-hook-form with explicit type
+  const methods = useForm<TicketFormData>({
     defaultValues: {
       fullName: '',
       email: '',
@@ -45,9 +57,11 @@ const MultiStepForm = () => {
     try {
       const savedFormData = localStorage.getItem('formData');
       if (savedFormData) {
-        const parsedData = JSON.parse(savedFormData);
-        Object.keys(parsedData).forEach((key) => {
-          setValue(key, parsedData[key]);
+        const parsedData: Partial<TicketFormData> = JSON.parse(savedFormData);
+        Object.entries(parsedData).forEach(([key, value]) => {
+          if (value !== undefined) {
+            setValue(key as keyof TicketFormData, value);
+          }
         });
       }
     } catch (error) {
@@ -96,7 +110,7 @@ const MultiStepForm = () => {
     alert('Form cancelled!');
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: TicketFormData) => {
     setIsSubmitting(true);
     try {
       // Simulate an API call
@@ -114,21 +128,9 @@ const MultiStepForm = () => {
   const renderStepComponent = () => {
     switch (currentStep) {
       case 0:
-        return (
-          <TicketSelection
-            control={control}
-            errors={errors}
-            setValue={setValue}
-          />
-        );
+        return <TicketSelection control={control} errors={errors} setValue={setValue} />;
       case 1:
-        return (
-          <AvatarUpload
-            control={control}
-            errors={errors}
-            setValue={setValue}
-          />
-        );
+        return <AvatarUpload control={control} errors={errors} setValue={setValue} />;
       case 2:
         console.log('Form Data:', formValues);
         return (
@@ -146,7 +148,7 @@ const MultiStepForm = () => {
   };
 
   return (
-    <FormProvider {...methods}> {/* Wrap with FormProvider */}
+    <FormProvider {...methods}>
       <div className="w-full flex flex-col items-center py-10 text-white">
         <TicketCard
           header={steps[currentStep]}

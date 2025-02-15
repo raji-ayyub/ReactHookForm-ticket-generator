@@ -1,12 +1,23 @@
 
-import { Controller } from 'react-hook-form';
 
-const TicketSelection = ({ control, errors }) => {
+
+import { Controller, Control, FieldErrors } from 'react-hook-form';
+
+interface TicketFormData {
+  ticketType: 'regular' | 'vip' | 'vvip';
+  quantity: number;
+}
+
+interface TicketSelectionProps {
+  control: Control<TicketFormData>;
+  errors: FieldErrors<TicketFormData>;
+}
+
+const TicketSelection: React.FC<TicketSelectionProps> = ({ control, errors }) => {
 
   return (
-
     <div className="w-full mx-auto shadow-lg text-white max-w-md">
-      
+
       {/* Event Banner */}
       <div className="h-[243px] overflow-hidden rounded-[12px] border border-[#197686]">
         <div className="bg-gradient h-[243px] px-[12px] rounded-[12px] flex flex-col justify-between items-center">
@@ -110,14 +121,14 @@ const TicketSelection = ({ control, errors }) => {
         <Controller
           name="quantity"
           control={control}
-          rules={{ required: 'Number of Tickets is required', min: 1 }}
+          rules={{ required: 'Number of Tickets is required', min: { value: 1, message: 'At least 1 ticket is required' } }}
           render={({ field }) => (
             <input
               {...field}
               type="number"
               className="w-full p-2 h-[48px] bg-transparent focus:ring-2 focus:ring-[#197686]-500 rounded-[12px] border border-[#07373F]"
               min="1"
-              onChange={(e) => field.onChange(parseInt(e.target.value))}
+              onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
             />
           )}
         />

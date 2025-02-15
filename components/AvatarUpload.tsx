@@ -1,22 +1,45 @@
 
-'use client';
 
 
-import { useFormContext, Controller } from 'react-hook-form';
-import Image from 'next/image';
+import { useFormContext, Controller, Control, FieldErrors, UseFormSetValue } from "react-hook-form";
+import Image from "next/image";
 
-const AvatarUpload = ({ onUpload }: { onUpload: (url: string) => void }) => {
+type TicketFormData = {
+  fullName: string;
+  email: string;
+  avatar: string;
+  ticketType: string;
+  name: string;
+  about: string;
+  quantity: number;
+};
+
+interface AvatarUploadProps {
+  onUpload: (url: string) => void;
+  control: Control<TicketFormData>;
+  errors: FieldErrors<TicketFormData>;
+  setValue: UseFormSetValue<{
+    fullName: string;
+    email: string;
+    avatar: string;
+    ticketType: string;
+    quantity: number;
+  }>;
+}
+
+
+
+const AvatarUpload: React.FC<AvatarUploadProps> = ({ onUpload, control, errors, setValue }) => {
+  const {watch} = useFormContext();
   
-  const { control, watch, formState: { errors } } = useFormContext();
-  const mail = "/img/icon.svg"
+  const mail = "/img/icon.svg";
 
   return (
-
     <div className="flex flex-col items-center space-y-4">
       {/* Image Upload Section */}
-      <div className="w-full h-[344px] rounded-[24px] p-[24px] flex flex-col gap-[32px] bg-[#052228] border  border-[#07373F]">
+      <div className="w-full h-[344px] rounded-[24px] p-[24px] flex flex-col gap-[32px] bg-[#052228] border border-[#07373F]">
         <p>Upload Profile Photo</p>
-        <div className="w-[240px] md:w-full h-[240px] bg-[#0E464F] flex mx-auto justify-center  bg-umbra">
+        <div className="w-[240px] md:w-full h-[240px] bg-[#0E464F] flex mx-auto justify-center bg-umbra">
           <div className="bg-[#0E464F] max-w-[240px] max-h-[240px] flex items-center relative w-full justify-center overflow-hidden rounded-[32px] group">
             <div className="flex items-center justify-center absolute w-full h-full img-cover">
               <Controller
@@ -32,42 +55,38 @@ const AvatarUpload = ({ onUpload }: { onUpload: (url: string) => void }) => {
                         const reader = new FileReader();
                         reader.onload = () => {
                           field.onChange(reader.result as string);
+                          setValue("avatar", reader.result as string); // ✅ Explicitly set the avatar value
                           onUpload(reader.result as string);
-                         
                         };
-
                         reader.readAsDataURL(file);
-                       
                       }
                     }}
                     className="absolute cursor-pointer border w-full h-full rounded-[32px] z-10 opacity-0"
                   />
                 )}
               />
-              {/* Conditionally render the text */}
-              
-            
-              {watch('avatar') ? (
+              {watch("avatar") ? (
                 <p className="text-white rounded absolute w-[192px] text-[16px] text-center disabled:opacity-0"></p>
-                
-              ) : (<p className="text-white absolute rounded w-[192px] text-[16px] text-center  disabled:opacity-50">Drag & drop or click to upload</p>)}
+              ) : (
+                <p className="text-white absolute rounded w-[192px] text-[16px] text-center disabled:opacity-50">
+                  Drag & drop or click to upload
+                </p>
+              )}
 
-              {errors.avatar && <p className="text-red-500">{errors.avatar.message}</p>}
-
-             
+              {errors.avatar && typeof errors.avatar.message === "string" && (
+                <p className="text-red-500">{errors.avatar.message}</p>
+              )}
             </div>
 
-
-            {watch('avatar') && ( 
+            {watch("avatar") && (
               <>
                 <Image
-                  src={watch('avatar')}
+                  src={watch("avatar")}
                   alt="Preview"
                   width={200}
                   height={200}
-                  className="w-full  z-[0]"
+                  className="w-full z-[0]"
                 />
-                {/* Show text on hover */}
                 <p className="text-white rounded w-[192px] text-[16px] text-center absolute opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                   Drag & drop or click to upload
                 </p>
@@ -83,7 +102,7 @@ const AvatarUpload = ({ onUpload }: { onUpload: (url: string) => void }) => {
         <Controller
           name="fullName"
           control={control}
-          rules={{ required: 'Full Name is required' }}
+          rules={{ required: "Full Name is required" }}
           render={({ field }) => (
             <input
               {...field}
@@ -92,8 +111,9 @@ const AvatarUpload = ({ onUpload }: { onUpload: (url: string) => void }) => {
             />
           )}
         />
-        {errors.fullName && (
-          <p className="text-red-500 text-sm mt-2">{errors.fullName.message}</p>
+
+        {errors.fullName && typeof errors.fullName.message === "string" && (
+          <p className="text-red-500">{errors.fullName.message}</p>
         )}
       </div>
 
@@ -104,33 +124,32 @@ const AvatarUpload = ({ onUpload }: { onUpload: (url: string) => void }) => {
           name="email"
           control={control}
           rules={{
-            required: 'Email is required',
+            required: "Email is required",
             pattern: {
               value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: 'Invalid email address',
+              message: "Invalid email address",
             },
           }}
           render={({ field }) => (
             <div className="w-full p-[6px] gap-[8px] h-[48px] flex items-center bg-transparent focus:ring-2 focus:ring-[#197686]-500 rounded-[12px] border border-[#07373F]">
-              
-                <Image
-                  src={mail}
-                  alt="Preview"
-                  width={200}
-                  height={200}
-                  className="w-[1.5rem] relative z-[0]"
-                />
-
-                <input
+              <Image
+                src={mail}
+                alt="Preview"
+                width={200}
+                height={200}
+                className="w-[1.5rem] relative z-[0]"
+              />
+              <input
                 {...field}
                 type="email"
-                className=" p-[4px] h-[20px] w-[80%] bg-transparent focus:ring-2 focus:border-0 focus:outline-0  focus:ring-[#07373F]-500 rounded-[2px] "
-                />
+                className="p-[4px] h-[20px] w-[80%] bg-transparent focus:ring-2 focus:border-0 focus:outline-0 focus:ring-[#07373F]-500 rounded-[2px]"
+              />
             </div>
           )}
         />
-        {errors.email && (
-          <p className="text-red-500 text-sm mt-2">{errors.email.message}</p>
+
+        {errors.email && typeof errors.email.message === "string" && (
+          <p className="text-red-500">{errors.email.message}</p>
         )}
       </div>
 
@@ -140,7 +159,7 @@ const AvatarUpload = ({ onUpload }: { onUpload: (url: string) => void }) => {
         <Controller
           name="about"
           control={control}
-          rules={{ required: 'About the Project is required' }}
+          rules={{ required: "About the Project is required" }}
           render={({ field }) => (
             <textarea
               {...field}
@@ -148,8 +167,9 @@ const AvatarUpload = ({ onUpload }: { onUpload: (url: string) => void }) => {
             />
           )}
         />
-        {errors.about && (
-          <p className="text-red-500 text-sm mt-2">{errors.about.message}</p>
+
+        {errors.about && typeof errors.about.message === "string" && (
+          <p className="text-red-500">{errors.about.message}</p>
         )}
       </div>
     </div>

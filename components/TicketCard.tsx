@@ -107,10 +107,10 @@ const TicketCard: React.FC<CardProps> = ({
 
         {/* Button Section */}
         <div className="flex flex-col md:flex-row gap-[16px] md:justify-center md:gap-[32px] md:w-[407px] md:bg-[#041E23] md:border border-[#0E464F] h-[112px] md:h-[48px] md:rounded-full">
-          {showNextButton && renderButton(onNextClick, nextButtonText, 'solid', isLoading)}
-          {showSubmitButton && renderButton(onSubmitClick, submitButtonText, 'solid', isLoading)}
-          {showCancelButton && renderButton(onCancelClick, cancelButtonText, 'transparent')} {/* Use 'transparent' variant */}
-          {showPrevButton && renderButton(onPrevClick, prevButtonText, 'outline')}
+            {showNextButton && renderButton(onNextClick ?? (() => {}), nextButtonText, 'solid', isLoading)}
+            {showSubmitButton && renderButton(onSubmitClick ?? (() => {}), submitButtonText, 'solid', isLoading)}
+            {showCancelButton && renderButton(onCancelClick ?? (() => {}), cancelButtonText, 'transparent')}
+            {showPrevButton && renderButton(onPrevClick ?? (() => {}), prevButtonText, 'outline')}
         </div>
       </div>
     </div>
