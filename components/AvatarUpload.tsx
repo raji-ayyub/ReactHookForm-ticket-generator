@@ -1,7 +1,7 @@
 import { Controller, Control, FieldErrors, UseFormSetValue, useWatch } from "react-hook-form";
 import Image from "next/image";
 
-// Define the form data type
+
 type TicketFormData = {
   fullName: string;
   email: string;
@@ -12,7 +12,7 @@ type TicketFormData = {
   about: string; 
 };
 
-// Define the props for AvatarUpload
+
 interface AvatarUploadProps {
   onUpload: (url: string) => void;
   control: Control<TicketFormData>;
@@ -25,22 +25,31 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ onUpload, control, errors, 
   const avatar = useWatch({ control, name: "avatar" }); // Use useWatch to watch the avatar field
 
   return (
+
     <div className="flex flex-col items-center space-y-4">
+
       {/* Image Upload Section */}
       <div className="w-full h-[344px] rounded-[24px] p-[24px] flex flex-col gap-[32px] bg-[#052228] border border-[#07373F]">
+
         <p>Upload Profile Photo</p>
+
         <div className="w-[240px] md:w-full h-[240px] bg-[#0E464F] flex mx-auto justify-center bg-umbra">
           <div className="bg-[#0E464F] max-w-[240px] max-h-[240px] flex items-center relative w-full justify-center overflow-hidden rounded-[32px] group">
+            
             <div className="flex items-center justify-center absolute w-full h-full img-cover">
+
               <Controller
                 name="avatar"
                 control={control}
                 render={({ field }) => (
+
                   <input
                     type="file"
                     accept="image/*"
                     onChange={(e) => {
+
                       const file = e.target.files?.[0];
+                      
                       if (file) {
                         const reader = new FileReader();
                         reader.onload = () => {
@@ -54,7 +63,10 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ onUpload, control, errors, 
                     className="absolute cursor-pointer border w-full h-full rounded-[32px] z-10 opacity-0"
                   />
                 )}
+
               />
+
+
               {avatar ? (
                 <p className="text-white rounded absolute w-[192px] text-[16px] text-center disabled:opacity-0"></p>
               ) : (

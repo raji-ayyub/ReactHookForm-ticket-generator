@@ -44,20 +44,20 @@ const Navbar = () => {
         {/* Navigation Links */}
         <div className="md:flex hidden space-x-4">
           <Link
-            href="/events"
+            href="/home"
             className="text-white hover:bg-gray-700 px-3 py-2 rounded"
           >
             Events
           </Link>
           <Link
-            href="/my-tickets"
+            href="/dashboard"
             className="text-white hover:bg-gray-700 px-3 py-2 rounded"
           >
             My Tickets
           </Link>
           <Link
             href="/about"
-            className="text-white hover:bg-gray-700 px-3 py-2 rounded"
+            className="text-white hover:bg-gray-700  px-3 py-2 rounded"
           >
             About Project
           </Link>
@@ -65,7 +65,7 @@ const Navbar = () => {
 
 
         <Link
-            href="/my-tickets"
+            href="/dashboard"
             className="text-[#0A0C11] bg-white flex items-center gap-[8px] hover:bg-gray-100 px-[16px] py-[12px]  rounded-[12px] font-[14px] "
           >
             My Tickets
