@@ -1,38 +1,28 @@
-
-
-
-import { useFormContext, Controller, Control, FieldErrors, UseFormSetValue } from "react-hook-form";
+import { Controller, Control, FieldErrors, UseFormSetValue, useWatch } from "react-hook-form";
 import Image from "next/image";
 
+// Define the form data type
 type TicketFormData = {
   fullName: string;
   email: string;
   avatar: string;
-  ticketType: string;
-  name: string;
-  about: string;
+  ticketType: 'regular' | 'vip' | 'vvip' | string;
   quantity: number;
+  name: string; 
+  about: string; 
 };
 
+// Define the props for AvatarUpload
 interface AvatarUploadProps {
   onUpload: (url: string) => void;
   control: Control<TicketFormData>;
   errors: FieldErrors<TicketFormData>;
-  setValue: UseFormSetValue<{
-    fullName: string;
-    email: string;
-    avatar: string;
-    ticketType: string;
-    quantity: number;
-  }>;
+  setValue: UseFormSetValue<TicketFormData>;
 }
 
-
-
 const AvatarUpload: React.FC<AvatarUploadProps> = ({ onUpload, control, errors, setValue }) => {
-  const {watch} = useFormContext();
-  
   const mail = "/img/icon.svg";
+  const avatar = useWatch({ control, name: "avatar" }); // Use useWatch to watch the avatar field
 
   return (
     <div className="flex flex-col items-center space-y-4">
@@ -65,7 +55,7 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ onUpload, control, errors, 
                   />
                 )}
               />
-              {watch("avatar") ? (
+              {avatar ? (
                 <p className="text-white rounded absolute w-[192px] text-[16px] text-center disabled:opacity-0"></p>
               ) : (
                 <p className="text-white absolute rounded w-[192px] text-[16px] text-center disabled:opacity-50">
@@ -78,10 +68,10 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ onUpload, control, errors, 
               )}
             </div>
 
-            {watch("avatar") && (
+            {avatar && (
               <>
                 <Image
-                  src={watch("avatar")}
+                  src={avatar}
                   alt="Preview"
                   width={200}
                   height={200}
@@ -96,7 +86,7 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ onUpload, control, errors, 
         </div>
       </div>
 
-      {/* Other form fields */}
+      {/* Full Name Field */}
       <div className="w-full flex flex-col my-[24px] gap-[8px]">
         <label className="block text-sm font-medium">Full Name</label>
         <Controller

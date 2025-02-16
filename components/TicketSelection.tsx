@@ -1,23 +1,24 @@
-
-
-
-import { Controller, Control, FieldErrors } from 'react-hook-form';
+import { Controller, Control, FieldErrors, UseFormSetValue } from 'react-hook-form';
 
 interface TicketFormData {
-  ticketType: 'regular' | 'vip' | 'vvip';
+  ticketType: 'regular' | 'vip' | 'vvip' | string;
   quantity: number;
+  fullName: string;
+  email: string;
+  avatar: string;
+  name: string; 
+  about: string; 
 }
 
 interface TicketSelectionProps {
   control: Control<TicketFormData>;
   errors: FieldErrors<TicketFormData>;
+  setValue: UseFormSetValue<TicketFormData>;
 }
 
-const TicketSelection: React.FC<TicketSelectionProps> = ({ control, errors }) => {
-
+const TicketSelection: React.FC<TicketSelectionProps> = ({ control, errors, setValue }) => {
   return (
     <div className="w-full mx-auto shadow-lg text-white max-w-md">
-
       {/* Event Banner */}
       <div className="h-[243px] overflow-hidden rounded-[12px] border border-[#197686]">
         <div className="bg-gradient h-[243px] px-[12px] rounded-[12px] flex flex-col justify-between items-center">
@@ -48,7 +49,10 @@ const TicketSelection: React.FC<TicketSelectionProps> = ({ control, errors }) =>
             rules={{ required: 'Ticket Type is required' }}
             render={({ field }) => (
               <div
-                onClick={() => field.onChange('regular')}
+                onClick={() => {
+                  field.onChange('regular'); // Update form value
+                  setValue('ticketType', 'regular'); // Explicitly set value
+                }}
                 className={`flex w-[242px] h-[65px] hover:bg-[#197686] p-[8px] gap-[8px] justify-between rounded-[12px] border ${
                   field.value === 'regular' ? 'border-[#197686]' : 'border-[#07373F]'
                 } hover:border-[#197686] cursor-pointer`}
@@ -71,7 +75,10 @@ const TicketSelection: React.FC<TicketSelectionProps> = ({ control, errors }) =>
             rules={{ required: 'Ticket Type is required' }}
             render={({ field }) => (
               <div
-                onClick={() => field.onChange('vip')}
+                onClick={() => {
+                  field.onChange('vip'); // Update form value
+                  setValue('ticketType', 'vip'); // Explicitly set value
+                }}
                 className={`flex w-[242px] h-[65px] hover:bg-[#197686] p-[8px] gap-[8px] justify-between rounded-[12px] border ${
                   field.value === 'vip' ? 'border-[#197686]' : 'border-[#07373F]'
                 } hover:border-[#197686] cursor-pointer`}
@@ -94,7 +101,10 @@ const TicketSelection: React.FC<TicketSelectionProps> = ({ control, errors }) =>
             rules={{ required: 'Ticket Type is required' }}
             render={({ field }) => (
               <div
-                onClick={() => field.onChange('vvip')}
+                onClick={() => {
+                  field.onChange('vvip'); // Update form value
+                  setValue('ticketType', 'vvip'); // Explicitly set value
+                }}
                 className={`flex w-[242px] h-[65px] hover:bg-[#197686] p-[8px] gap-[8px] justify-between rounded-[12px] border ${
                   field.value === 'vvip' ? 'border-[#197686]' : 'border-[#07373F]'
                 } hover:border-[#197686] cursor-pointer`}
@@ -121,14 +131,21 @@ const TicketSelection: React.FC<TicketSelectionProps> = ({ control, errors }) =>
         <Controller
           name="quantity"
           control={control}
-          rules={{ required: 'Number of Tickets is required', min: { value: 1, message: 'At least 1 ticket is required' } }}
+          rules={{
+            required: 'Number of Tickets is required',
+            min: { value: 1, message: 'At least 1 ticket is required' },
+          }}
           render={({ field }) => (
             <input
               {...field}
               type="number"
               className="w-full p-2 h-[48px] bg-transparent focus:ring-2 focus:ring-[#197686]-500 rounded-[12px] border border-[#07373F]"
               min="1"
-              onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
+              onChange={(e) => {
+                const value = parseInt(e.target.value) || 1;
+                field.onChange(value); // Update form value
+                setValue('quantity', value); // Explicitly set value
+              }}
             />
           )}
         />

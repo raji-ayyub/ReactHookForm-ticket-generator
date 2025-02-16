@@ -14,8 +14,10 @@ interface TicketFormData {
   fullName: string;
   email: string;
   avatar: string;
-  ticketType: string;
+  ticketType: 'regular' | 'vip' | 'vvip' | string;
   quantity: number;
+  name: string; 
+  about: string; 
   
 }
 
@@ -35,6 +37,8 @@ const MultiStepForm = () => {
       avatar: '',
       ticketType: '',
       quantity: 1,
+      name: '',
+      about: '',
     },
   });
 
@@ -128,9 +132,18 @@ const MultiStepForm = () => {
   const renderStepComponent = () => {
     switch (currentStep) {
       case 0:
-        return <TicketSelection control={control} errors={errors} setValue={setValue} />;
+        return <TicketSelection 
+                control={control} 
+                errors={errors} 
+                setValue={setValue} 
+              />;
       case 1:
-        return <AvatarUpload control={control} errors={errors} setValue={setValue} />;
+        return <AvatarUpload
+        control={control}
+        errors={errors}
+        setValue={setValue}
+        onUpload={(url) => setValue("avatar", url)} // Add this prop
+      />;
       case 2:
         console.log('Form Data:', formValues);
         return (
